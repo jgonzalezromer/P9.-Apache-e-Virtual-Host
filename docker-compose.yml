@@ -1,0 +1,25 @@
+service:
+  DNS:
+    container_name: DNS_P9
+    image: internetsystemsconsortium/bind9
+    ports:
+      - 54:53/udp
+      - 54:53/tcp
+      - 127.0.0.1:953:953/tcp
+    volumes:
+      - ./DNS/etc/bind:/etc/bind
+      - ./DNS/var/cache/bind:/var/cache/bind
+      - ./DNS/var/lib/bind:/var/lib/bind
+    restart: always
+    networks:
+      P9_network:
+        ipv4_address: 172.18.0.1
+  Servidor_web:
+networks:
+  P9_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          ip_range: 172.18.0.0/24
+          gateway: 172.18.0.254
