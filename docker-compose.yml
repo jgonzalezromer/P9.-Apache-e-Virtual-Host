@@ -1,7 +1,7 @@
-service:
+services:
   DNS:
     container_name: DNS_P9
-    image: internetsystemsconsortium/bind9
+    image: internetsystemsconsortium/bind9:9.18
     ports:
       - 54:53/udp
       - 54:53/tcp
@@ -15,6 +15,19 @@ service:
       P9_network:
         ipv4_address: 172.18.0.1
   Servidor_web:
+    container_name: SW_P9
+    image: httpd:latest
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./SW/usr/local/apache2/htdocs:/usr/local/apache2/htdocs
+      - ./SW/usr/local/apache2/conf:/usr/local/apache2/conf
+    networks:
+      P9_network:
+        ipv4_address: 172.18.0.50
+    dns:
+      - 172.18.0.1
 networks:
   P9_network:
     driver: bridge
