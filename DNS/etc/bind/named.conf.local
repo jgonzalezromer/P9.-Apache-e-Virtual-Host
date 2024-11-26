@@ -1,7 +1,16 @@
-zone "practica7.int" {
+zone "fabulasmaravillosas.int" {
 	type master;
-        file "/var/lib/bind/db.practica7.int";
+        file "/var/lib/bind/db.fabulasmaravillosas.int";
         allow-query {
                 any;
                 };
 	};
+	
+zone "fabulasoscuras.int" {
+	type master;
+        file "/var/lib/bind/db.fabulasoscuras.int";
+        allow-query {
+                any;
+                };
+	};
+	
