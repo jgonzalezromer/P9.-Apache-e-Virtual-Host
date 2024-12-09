@@ -1,38 +1,34 @@
 services:
-  DNS:
-    container_name: DNS_P9
-    image: internetsystemsconsortium/bind9:9.18
+  web:
+    image: php:7.4-apache
+    container_name: apache_server
     ports:
-      - 54:53/udp
-      - 54:53/tcp
-      - 127.0.0.1:953:953/tcp
+      - "80:80"
     volumes:
-      - ./DNS/etc/bind:/etc/bind
-      - ./DNS/var/cache/bind:/var/cache/bind
-      - ./DNS/var/lib/bind:/var/lib/bind
-    restart: always
+      - ./www:/var/www
+      - ./confApache:/etc/apache2
     networks:
-      P9_network:
-        ipv4_address: 172.18.0.1
-  Servidor_web:
-    container_name: SW_P9
-    image: httpd:latest
+      apache_red:
+        ipv4_address: 172.39.4.2
+
+  dns:
+    container_name: dns_server
+    image: ubuntu/bind9
     ports:
-      - 80:80/tcp
-      - 8080:8080/tcp
+      - "57:53"
     volumes:
-      - ./SW/usr/local/apache2/htdocs:/usr/local/apache2/htdocs
-      - ./SW/usr/local/apache2/conf:/usr/local/apache2/conf
+      - ./confDNS/conf:/etc/bind
+      - ./confDNS/zonas:/var/lib/bind
     networks:
-      P9_network:
-        ipv4_address: 172.18.0.50
-    dns:
-      - 172.18.0.1
+      apache_red:
+        ipv4_address: 172.39.4.3
+
 networks:
-  P9_network:
+  apache_red:
     driver: bridge
     ipam:
+      driver: default
       config:
-        - subnet: 172.18.0.0/16
-          ip_range: 172.18.0.0/24
-          gateway: 172.18.0.254
+        - subnet: 172.39.0.0/16
+
+
