@@ -208,7 +208,8 @@ zone "255.in-addr.arpa" {
 Nesta carpeta é onde gardamos os documentos .html que utilizaran has páxinas ao cargarse.
 ---
 # systemd-resolved.sh
-sudo chmod 755 ./systemd-resolved.sh
+Con este programa cambiamos o DNS da máquina onde estamos.
+Para utilizalo temos que estar no directorio onde este o arquivo e facer o comando `sudo chmod 755 ./systemd-resolved.sh && ./systemd-resolved.sh`
 ```
 #/bin/bash
 echo "#Documento onde indicamos o DNS
