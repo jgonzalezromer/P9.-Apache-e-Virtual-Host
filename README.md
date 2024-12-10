@@ -97,7 +97,7 @@ networks:
 # confApache
 Neste directorio gardaremos a configuración de apache.
 ## fabulasmaravillosas.conf
-Neste documento tipo xml gardaremos a información que terá apache sobre as nosas páxinas:
+Neste documento tipo xml gardaremos a información que terá apache sobre a nosa páxina fabulasmaravillosas.asircastelao.int
 ```
 <VirtualHost *:80> #O virtual host escoitará calquers IP polo porto 80
     ServerAdmin webmaster@localhost #Indicamos o correo do administrador
@@ -107,6 +107,7 @@ Neste documento tipo xml gardaremos a información que terá apache sobre as nos
 </VirtualHost>
 ```
 ## fabulasoscuras.conf
+Neste documento tipo xml gardaremos a información que terá apache sobre a nosa páxina fabulasoscuras.asircastelao.int
 ```
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -117,7 +118,10 @@ Neste documento tipo xml gardaremos a información que terá apache sobre as nos
 ```
 ---
 # confDNS
+Neste directorio gardamos a configuración do DNS
 ## Zonas
+O arquivo de zonas levará a información das zonas creadas no noso servidos.
+O máis relevante é que cando alguen busque algunha fas fabulas este arquivo direccionará ao servidor apache.
 ```
 $TTL    604800
 @       IN      SOA     ns.asircastelao.int. some.email.address.com. (
@@ -129,11 +133,13 @@ $TTL    604800
 
 @       IN      NS      ns.asircastelao.int.
 ns 	IN 	A 	172.39.4.3
-fabulasoscuras       IN      A       172.39.4.2
-fabulasmaravillosas     IN      A       172.39.4.2
+fabulasoscuras       IN      A       172.39.4.2 #Cando alguen busca fabulasoscuras se lle direcciona ao servidor apache
+fabulasmaravillosas     IN      A       172.39.4.2 #Cando alguen busca fabulasmaravillosas se lle direcciona ao servidor apachd
 ```
 ## conf
+Neste arquivo teremos os arquivos principais de configuración do DNS.
 ### named.conf.local
+Este arquivo expecifica as zonas do servidor e que arquivo as define:
 ```
 zone "asircastelao.int" {
     type master;
@@ -144,6 +150,7 @@ zone "asircastelao.int" {
 };
 ```
 ### named.conf.options
+Neste arquivo eleximos a ruta que servirá como cache e os forwarders que usaranse se o DNS local non pode resolver algunha dirección
 ```
 options {
     directory "/var/cache/bind";
@@ -159,11 +166,13 @@ options {
 };
 ```
 ### named.conf
+Este arquivo chama os outro arquivos, seria como unha función main nos lenguaxes de programación.
 ```
 include "/etc/bind/named.conf.options";
 include "/etc/bind/named.conf.local";
 ```
 ### named.conf.default-zones
+Este arquivo define as zonas por defecto do servidor
 ```
 // prime the server with knowledge of the root servers
 zone "." {
