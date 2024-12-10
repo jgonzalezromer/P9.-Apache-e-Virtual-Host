@@ -226,9 +226,11 @@ fi
 nmcli connection modify "$PROFILE_NAME" ipv4.ignore-auto-dns yes
 nmcli connection down "$PROFILE_NAME" && nmcli connection up "$PROFILE_NAME"
 ```
+Si nos da fallo la con el texto `No se detecto una conexión...` (lo cual pasa en máquina virtual), debemos cambiar el DNS automático de forma manual. Esto se hace yendo arriba a la derecha > Cableado conectado > Configuración de red cableada > le damos a la ruedita de cableado > IPv4 > desactivamos el automático en DNS.
+
 # restore_systemd-resolved.sh
 Este programa serve para restablecer a configuración do DNS.
-Para utilizalo hai que facer o seguinte comando onde este o arquivo sudo chmod 755 ./restore_systemd-resolved.sh
+Para utilizalo hai que facer o seguinte comando onde este o arquivo `sudo chmod 755 ./restore_systemd-resolved.sh`
 ```
 #/bin/bash
 echo "# Archivo de configuración predeterminado
@@ -242,13 +244,21 @@ echo "# Archivo de configuración predeterminado
 #DNSOverTLS=no
 #Cache=yes
 #DNSStubListener=yes" | sudo tee /etc/systemd/resolved.conf
+
 sudo systemctl restart systemd-resolved
 
-PROFILE_NAME=$(nmcli -t -f NAME,DEVICE connection show --active | grep ":" | awk -F':' '{print $1}')
-nmcli connection modify "$PROFILE_NAME" ipv4.ignore-auto-dns no
-nmcli connection down "$PROFILE_NAME" && nmcli connection up "$PROFILE_NAME"
-```
+PROFILE_NAME=$(nmcli -t -f NAME connection show --active | grep "Con>
 
+if [ -z "$PROFILE_NAME" ]; then
+    echo "No se encontró una conexión activa válida. Intentalo de fo>
+    exit 1
+fi
+
+nmcli connection modify "$PROFILE_NAME" ipv4.ignore-auto-dns no
+nmcli connection down "$PROFILE_NAME" && nmcli connection up "$PROFI>
+```
+Si nos da fallo la con el texto `No se encontró una conexión...` (lo cual pasa en máquina virtual), debemos cambiar el DNS automático de forma manual. Esto se hace yendo arriba a la derecha > Cableado conectado > Configuración de red cableada > le damos a la ruedita de cableado > IPv4 > activamos el automático en DNS.
 
 ---
 # Comprobación
+Para comprobar debemos de ir a un buscador y hacer las busquedas `fabulasmaravillosas.asircastelao.int` y `fabulasoscuras.asircastelao.int`.
