@@ -95,13 +95,15 @@ networks:
 
 ---
 # confApache
+Neste directorio gardaremos a configuración de apache.
 ## fabulasmaravillosas.conf
+Neste documento tipo xml gardaremos a información que terá apache sobre as nosas páxinas:
 ```
-<VirtualHost *:80>
-    ServerAdmin webmaster@localhost
-    ServerName fabulasmaravillosas.asircastelao.int
-    ServerAlias www.fabulasmaravillosas.asircastelao.int
-    DocumentRoot /var/www/fabulasmaravillosas
+<VirtualHost *:80> #O virtual host escoitará calquers IP polo porto 80
+    ServerAdmin webmaster@localhost #Indicamos o correo do administrador
+    ServerName fabulasmaravillosas.asircastelao.int #Nome principal do server
+    ServerAlias www.fabulasmaravillosas.asircastelao.int #Outros nome polos que se pode identifacar o servidor
+    DocumentRoot /var/www/fabulasmaravillosas #Directorio onde estará a información da páxina
 </VirtualHost>
 ```
 ## fabulasoscuras.conf
