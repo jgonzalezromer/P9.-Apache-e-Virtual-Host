@@ -227,7 +227,8 @@ nmcli connection modify "$PROFILE_NAME" ipv4.ignore-auto-dns yes
 nmcli connection down "$PROFILE_NAME" && nmcli connection up "$PROFILE_NAME"
 ```
 # restore_systemd-resolved.sh
-sudo chmod 755 ./restore_systemd-resolved.sh
+Este programa serve para restablecer a configuración do DNS.
+Para utilizalo hai que facer o seguinte comando onde este o arquivo sudo chmod 755 ./restore_systemd-resolved.sh
 ```
 #/bin/bash
 echo "# Archivo de configuración predeterminado
