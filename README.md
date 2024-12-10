@@ -11,46 +11,51 @@ Juan Gabriel González Romero
 
 ---
 # Obxetivo
+O obxetivo de esta práctica é engadir a un docker-compose onde xa hai un DNS funcional un servidor web (apache). O DNS terá que resolver dous dominios.
 
 ---
 # docker-compose.yml
+O docker-compose que utilizamos terá dous servizos(DNS e WEB) e unha rede (apache_red).
 ## DNS
+O DNS será bastante simple:
 ```
 dns:
-    container_name: dns_server
-    image: ubuntu/bind9
+    container_name: dns_server #Nome do container
+    image: ubuntu/bind9 #Imaxe do DNS
     ports:
-      - "57:53"
+      - "57:53" #Portos mapeados, máquina:container
     volumes:
-      - ./confDNS/conf:/etc/bind
-      - ./confDNS/zonas:/var/lib/bind
+      - ./confDNS/conf:/etc/bind #A configuración do DNS irá no directorio confDNS/conf (/etc/bin no container)
+      - ./confDNS/zonas:/var/lib/bind #A información das zonas do DNS irá no directorio condDNS/zonas (/var/lib/bind no container)
     networks:
-      apache_red:
-        ipv4_address: 172.39.4.3
+      apache_red: #O container utilizará a rede apache_red
+        ipv4_address: 172.39.4.3 #Terá a IP fixa 172.39.4.3
 ```
 ## WEB
+Para o servidor web utilizamos apache:
 ```
 web:
-    image: php:7.4-apache
-    container_name: apache_server
+    image: php:7.4-apache #Imaxe de apache que utilizamos
+    container_name: apache_server #Nome do container
     ports:
-      - "80:80"
+      - "80:80" #Mapearemos o porto 80 da máquina para o container (poderíamos utilizar o 8080 tamén)
     volumes:
-      - ./www:/var/www
-      - ./confApache:/etc/apache2
+      - ./www:/var/www #A información das paxinas web (os arquivos .html) estará no directorio www (/var/www no container)
+      - ./confApache:/etc/apache2 #A configuración de apache irá no directorio confApache (/etc/apache2 no container)
     networks:
-      apache_red:
-        ipv4_address: 172.39.4.2
+      apache_red: #O servidor apache utilizará a rede apache_red
+        ipv4_address: 172.39.4.2 #Terá a IP fixa 182.39.4.2
 ```
 ## Red
+Agorá creamos a rede na cal estarán os containers:
 ```
 networks:
-  apache_red:
-    driver: bridge
+  apache_red: #Nome da rede
+    driver: bridge #Tipo da rede
     ipam:
       driver: default
       config:
-        - subnet: 172.39.0.0/16
+        - subnet: 172.39.0.0/16 #Subnet onde se atopará
 ```
 ### Completo
 ```
